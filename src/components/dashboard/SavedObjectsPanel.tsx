@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
 import { MapPin, Building2, Store, HomeIcon, BarChart3, ChevronRight } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
+import { getScoreColor, getScoreGradient, getScoreBadgeVariant } from '@/utils/colorUtils';
 
 interface SavedObject {
   id: number;
@@ -119,19 +120,34 @@ const SavedObjectsPanel: React.FC<SavedObjectsPanelProps> = ({ onOpenAnalytics }
         <p className="mt-2 text-muted-foreground">
           Сохраняйте интересующие вас локации для быстрого доступа к ним
         </p>
+        <Button 
+          className="mt-4" 
+          onClick={() => window.location.href = '/map'}
+        >
+          Добавить новый
+        </Button>
       </div>
     );
   }
   
   return (
-    <div className="grid gap-6 md:grid-cols-2">
-      {savedObjects.map((object) => (
-        <ObjectCard 
-          key={object.id} 
-          object={object} 
-          onOpenAnalytics={() => onOpenAnalytics(object)} 
-        />
-      ))}
+    <div className="space-y-6">
+      <div className="grid gap-6 md:grid-cols-2">
+        {savedObjects.map((object) => (
+          <ObjectCard 
+            key={object.id} 
+            object={object} 
+            onOpenAnalytics={() => onOpenAnalytics(object)} 
+          />
+        ))}
+      </div>
+      <div className="flex justify-center mt-6">
+        <Button 
+          onClick={() => window.location.href = '/map'}
+        >
+          Добавить новый
+        </Button>
+      </div>
     </div>
   );
 };
@@ -162,7 +178,10 @@ const ObjectCard: React.FC<ObjectCardProps> = ({ object, onOpenAnalytics }) => {
       <CardHeader className="pb-2">
         <div className="flex justify-between items-start">
           <CardTitle className="text-lg">{object.title}</CardTitle>
-          <Badge className="flex items-center gap-1">
+          <Badge 
+            variant={getScoreBadgeVariant(object.score)} 
+            className="flex items-center gap-1"
+          >
             {getTypeIcon()}
             <span>{object.score}%</span>
           </Badge>

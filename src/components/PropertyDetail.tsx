@@ -16,6 +16,9 @@ import {
 } from 'lucide-react';
 import { useUserType } from '@/context/UserTypeContext';
 import { useAnimationOnMount } from '@/utils/animations';
+import { getScoreColor } from '@/utils/colorUtils';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from '@/components/ui/dialog';
+import SensorPanel from './dashboard/SensorPanel';
 
 interface PropertyDetailProps {
   propertyId?: string;
@@ -24,6 +27,7 @@ interface PropertyDetailProps {
 const PropertyDetail: React.FC<PropertyDetailProps> = ({ propertyId = '1' }) => {
   const { userType } = useUserType();
   const [activeTab, setActiveTab] = useState('overview');
+  const [showDetailedAnalysis, setShowDetailedAnalysis] = useState(false);
   
   // Animations
   const cardAnimation = useAnimationOnMount('animate-scale-in', 300);
@@ -35,6 +39,7 @@ const PropertyDetail: React.FC<PropertyDetailProps> = ({ propertyId = '1' }) => 
     address: '1234 Main Street, New York, NY 10001',
     size: '2.5 acres',
     zoning: 'Mixed-use Commercial',
+    score: 85,
     features: [
       { label: 'Public Transportation', value: 'Excellent', score: 95 },
       { label: 'Schools Nearby', value: 'Good', score: 82 },
@@ -79,11 +84,20 @@ const PropertyDetail: React.FC<PropertyDetailProps> = ({ propertyId = '1' }) => 
   
   const tabs = getTabs();
   
-  // Score color based on value
-  const getScoreColor = (score: number) => {
-    if (score >= 85) return 'bg-green-500';
-    if (score >= 70) return 'bg-yellow-500';
-    return 'bg-red-500';
+  // Handler for the detailed analytics
+  const openDetailedAnalysis = () => {
+    setShowDetailedAnalysis(true);
+  };
+  
+  const handleSave = () => {
+    // This would typically save to a database
+    // Show toast notification instead
+    console.log('Saving object:', property);
+    
+    // Close dialog after saving
+    setTimeout(() => {
+      setShowDetailedAnalysis(false);
+    }, 1000);
   };
   
   return (
@@ -119,6 +133,15 @@ const PropertyDetail: React.FC<PropertyDetailProps> = ({ propertyId = '1' }) => 
             <p className="text-sm text-muted-foreground">Zoning</p>
             <p className="font-medium">{property.zoning}</p>
           </div>
+        </div>
+        
+        <div className="mt-4 flex justify-end">
+          <Button 
+            onClick={openDetailedAnalysis}
+            className="flex items-center gap-2"
+          >
+            Детальная аналитика
+          </Button>
         </div>
       </FloatingCard>
       
@@ -343,6 +366,61 @@ const PropertyDetail: React.FC<PropertyDetailProps> = ({ propertyId = '1' }) => 
           </FloatingCard>
         </TabsContent>
       </Tabs>
+      
+      {/* Detailed Analysis Dialog */}
+      {showDetailedAnalysis && (
+        <Dialog open={showDetailedAnalysis} onOpenChange={setShowDetailedAnalysis}>
+          <DialogContent className="max-w-4xl max-h-[80vh] overflow-y-auto">
+            <DialogHeader>
+              <DialogTitle>Детальный анализ локации</DialogTitle>
+              <DialogDescription>
+                {property.name} - Общая оценка: {property.score}%
+              </DialogDescription>
+            </DialogHeader>
+            
+            <div className="space-y-4">
+              {/* Overall rating card */}
+              <div className="card p-6 bg-card rounded-lg border shadow-sm">
+                <h3 className="text-2xl font-semibold leading-none tracking-tight mb-4">Общая оценка локации</h3>
+                <p className="text-sm text-muted-foreground mb-4">Анализ на основе данных IoT датчиков</p>
+                
+                <div className="space-y-4">
+                  <div className="flex items-center gap-4">
+                    <div className="flex-1">
+                      <div className="flex items-center justify-between mb-2">
+                        <span>Общий рейтинг</span>
+                        <span className="font-bold">{property.score}%</span>
+                      </div>
+                      <Progress value={property.score} className="h-2" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              {/* Additional sensor data */}
+              <SensorPanel userType={userType} />
+            </div>
+            
+            <DialogFooter className="flex justify-between sm:justify-between mt-4">
+              <Button 
+                onClick={() => setShowDetailedAnalysis(false)}
+                variant="outline"
+              >
+                Закрыть
+              </Button>
+              <div className="flex gap-2">
+                <Button onClick={handleSave} className="flex items-center gap-2">
+                  <BookmarkPlus className="h-4 w-4" />
+                  Сохранить
+                </Button>
+                <Button>
+                  Подробная аналитика
+                </Button>
+              </div>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
+      )}
     </div>
   );
 };
