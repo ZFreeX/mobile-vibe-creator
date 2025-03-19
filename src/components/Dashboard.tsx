@@ -1,30 +1,49 @@
-
-import React, { useState } from 'react';
-import { useAuth } from '@/context/AuthContext';
-import { useUserType } from '@/context/UserTypeContext';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Progress } from '@/components/ui/progress';
-import { Badge } from '@/components/ui/badge';
-import { Bell, Building2, HomeIcon, MapPin, Store, BookmarkPlus } from 'lucide-react';
-import FloatingCard from './ui/FloatingCard';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from '@/components/ui/dialog';
-import { useAnimationOnMount } from '@/utils/animations';
-import SavedObjectsPanel from './dashboard/SavedObjectsPanel';
-import NotificationsPanel from './dashboard/NotificationsPanel';
-import SensorPanel from './dashboard/SensorPanel';
+import React, { useState } from "react";
+import { useAuth } from "@/context/AuthContext";
+import { useUserType } from "@/context/UserTypeContext";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Progress } from "@/components/ui/progress";
+import { Badge } from "@/components/ui/badge";
+import {
+  Bell,
+  Building2,
+  HomeIcon,
+  MapPin,
+  Store,
+  BookmarkPlus,
+} from "lucide-react";
+import FloatingCard from "./ui/FloatingCard";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+  DialogFooter,
+} from "@/components/ui/dialog";
+import { useAnimationOnMount } from "@/utils/animations";
+import SavedObjectsPanel from "./dashboard/SavedObjectsPanel";
+import NotificationsPanel from "./dashboard/NotificationsPanel";
+import SensorPanel from "./dashboard/SensorPanel";
 
 const userTypeTranslation = {
-  'developer': 'Застройщик',
-  'business': 'Бизнес',
-  'residential': 'Житель'
+  developer: "Застройщик",
+  business: "Бизнес",
+  residential: "Житель",
 };
 
 const userTypeIcons = {
-  'developer': <Building2 className="h-5 w-5" />,
-  'business': <Store className="h-5 w-5" />,
-  'residential': <HomeIcon className="h-5 w-5" />
+  developer: <Building2 className="h-5 w-5" />,
+  business: <Store className="h-5 w-5" />,
+  residential: <HomeIcon className="h-5 w-5" />,
 };
 
 const DashboardComponent: React.FC = () => {
@@ -32,10 +51,10 @@ const DashboardComponent: React.FC = () => {
   const { userType } = useUserType();
   const [showDetailedAnalysis, setShowDetailedAnalysis] = useState(false);
   const [selectedObject, setSelectedObject] = useState<any>(null);
-  
-  const headerAnimation = useAnimationOnMount('animate-fade-in', 300);
-  const contentAnimation = useAnimationOnMount('animate-slide-up', 500);
-  
+
+  const headerAnimation = useAnimationOnMount("animate-fade-in", 300);
+  const contentAnimation = useAnimationOnMount("animate-slide-up", 500);
+
   const handleOpenAnalytics = (object) => {
     setSelectedObject(object);
     setShowDetailedAnalysis(true);
@@ -44,8 +63,8 @@ const DashboardComponent: React.FC = () => {
   const handleSave = () => {
     // This would typically save to a database
     // Show toast notification instead
-    console.log('Saving object:', selectedObject);
-    
+    console.log("Saving object:", selectedObject);
+
     // Close dialog after saving
     setTimeout(() => {
       setShowDetailedAnalysis(false);
@@ -55,18 +74,25 @@ const DashboardComponent: React.FC = () => {
   return (
     <div className="container py-8 px-4 md:px-6 max-w-6xl mx-auto">
       <header className={`mb-8 ${headerAnimation}`}>
+        <div className="flex items-center mb-4 gap-4">
+          <img src="./logo.png" className="w-12" alt="" />
+          <h1 className="text-2xl font-bold flex items-center gap-2 text-3xl">
+            UrbanThrough
+          </h1>
+        </div>
+
         <h1 className="text-2xl font-bold flex items-center gap-2">
-          Добро пожаловать, {user?.name || 'Пользователь'}
+          Добро пожаловать, {user?.name || "Пользователь"}!
           <Badge variant="outline" className="flex items-center gap-1 ml-2">
             {userTypeIcons[userType]}
-            {userTypeTranslation[userType] || 'Пользователь'}
+            {userTypeTranslation[userType] || "Пользователь"}
           </Badge>
         </h1>
         <p className="text-muted-foreground mt-2">
           Ваша персональная панель управления UrbanThrough
         </p>
       </header>
-      
+
       <div className={`${contentAnimation}`}>
         <Tabs defaultValue="saved" className="w-full">
           <TabsList className="mb-6">
@@ -74,25 +100,31 @@ const DashboardComponent: React.FC = () => {
               <MapPin className="h-4 w-4" />
               Сохраненные объекты
             </TabsTrigger>
-            <TabsTrigger value="notifications" className="flex items-center gap-2">
+            <TabsTrigger
+              value="notifications"
+              className="flex items-center gap-2"
+            >
               <Bell className="h-4 w-4" />
               Уведомления
             </TabsTrigger>
           </TabsList>
-          
+
           <TabsContent value="saved">
             <SavedObjectsPanel onOpenAnalytics={handleOpenAnalytics} />
           </TabsContent>
-          
+
           <TabsContent value="notifications">
             <NotificationsPanel />
           </TabsContent>
         </Tabs>
       </div>
-      
+
       {/* Detailed Analysis Dialog */}
       {showDetailedAnalysis && selectedObject && (
-        <Dialog open={showDetailedAnalysis} onOpenChange={setShowDetailedAnalysis}>
+        <Dialog
+          open={showDetailedAnalysis}
+          onOpenChange={setShowDetailedAnalysis}
+        >
           <DialogContent className="max-w-4xl max-h-[80vh] overflow-y-auto">
             <DialogHeader>
               <DialogTitle>Детальный анализ локации</DialogTitle>
@@ -100,7 +132,7 @@ const DashboardComponent: React.FC = () => {
                 {selectedObject.title} - Общая оценка: {selectedObject.score}%
               </DialogDescription>
             </DialogHeader>
-            
+
             <div className="space-y-4">
               {/* The content here should match the Map's detailed analysis dialog */}
               <Card>
@@ -116,34 +148,40 @@ const DashboardComponent: React.FC = () => {
                       <div className="flex-1">
                         <div className="flex items-center justify-between mb-2">
                           <span>Общий рейтинг</span>
-                          <span className="font-bold">{selectedObject.score}%</span>
+                          <span className="font-bold">
+                            {selectedObject.score}%
+                          </span>
                         </div>
-                        <Progress value={selectedObject.score} className="h-2" />
+                        <Progress
+                          value={selectedObject.score}
+                          className="h-2"
+                        />
                       </div>
                     </div>
                   </div>
                 </CardContent>
               </Card>
-              
+
               {/* Additional sensor data will be rendered here based on user type */}
               <SensorPanel userType={userType} />
             </div>
-            
+
             <DialogFooter className="flex justify-between sm:justify-between mt-4">
-              <Button 
+              <Button
                 onClick={() => setShowDetailedAnalysis(false)}
                 variant="outline"
               >
                 Закрыть
               </Button>
               <div className="flex gap-2">
-                <Button onClick={handleSave} className="flex items-center gap-2">
+                <Button
+                  onClick={handleSave}
+                  className="flex items-center gap-2"
+                >
                   <BookmarkPlus className="h-4 w-4" />
                   Сохранить
                 </Button>
-                <Button>
-                  Подробная аналитика
-                </Button>
+                <Button>Подробная аналитика</Button>
               </div>
             </DialogFooter>
           </DialogContent>

@@ -1,84 +1,89 @@
-
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useAuth } from '@/context/AuthContext';
-import { useToast } from '@/components/ui/use-toast';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import FloatingCard from '../ui/FloatingCard';
-import { useAnimationOnMount } from '@/utils/animations';
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "@/context/AuthContext";
+import { useToast } from "@/components/ui/use-toast";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import FloatingCard from "../ui/FloatingCard";
+import { useAnimationOnMount } from "@/utils/animations";
 
 const AuthScreen: React.FC = () => {
   const { login, register } = useAuth();
   const navigate = useNavigate();
   const { toast } = useToast();
-  
+
   // Form state for login
-  const [loginEmail, setLoginEmail] = useState('');
-  const [loginPassword, setLoginPassword] = useState('');
+  const [loginEmail, setLoginEmail] = useState("");
+  const [loginPassword, setLoginPassword] = useState("");
   const [isLoggingIn, setIsLoggingIn] = useState(false);
-  
+
   // Form state for registration
-  const [registerName, setRegisterName] = useState('');
-  const [registerEmail, setRegisterEmail] = useState('');
-  const [registerPassword, setRegisterPassword] = useState('');
+  const [registerName, setRegisterName] = useState("");
+  const [registerEmail, setRegisterEmail] = useState("");
+  const [registerPassword, setRegisterPassword] = useState("");
   const [isRegistering, setIsRegistering] = useState(false);
-  
+
   // Animations
-  const cardAnimation = useAnimationOnMount('animate-scale-in', 300);
-  
+  const cardAnimation = useAnimationOnMount("animate-scale-in", 300);
+
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoggingIn(true);
-    
+
     try {
       await login(loginEmail, loginPassword);
-      navigate('/dashboard');
+      navigate("/dashboard");
     } catch (error) {
       toast({
-        title: 'Ошибка входа',
-        description: 'Неверные учетные данные. Пожалуйста, попробуйте снова.',
-        variant: 'destructive'
+        title: "Ошибка входа",
+        description: "Неверные учетные данные. Пожалуйста, попробуйте снова.",
+        variant: "destructive",
       });
     } finally {
       setIsLoggingIn(false);
     }
   };
-  
+
   const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsRegistering(true);
-    
+
     try {
       await register(registerEmail, registerPassword, registerName);
-      navigate('/dashboard');
+      navigate("/dashboard");
     } catch (error) {
       toast({
-        title: 'Ошибка регистрации',
-        description: 'Не удалось завершить регистрацию. Пожалуйста, попробуйте снова.',
-        variant: 'destructive'
+        title: "Ошибка регистрации",
+        description:
+          "Не удалось завершить регистрацию. Пожалуйста, попробуйте снова.",
+        variant: "destructive",
       });
     } finally {
       setIsRegistering(false);
     }
   };
-  
+
   return (
     <div className="min-h-screen flex items-center justify-center p-6 bg-gradient-to-b from-background to-secondary/50">
       <FloatingCard className={`w-full max-w-md p-8 ${cardAnimation}`}>
-        <div className="text-center mb-8">
-          <h1 className="text-2xl font-bold mb-2">Добро пожаловать в GeoSmart</h1>
-          <p className="text-muted-foreground">Войдите, чтобы продолжить работу с панелью управления</p>
+        <div className="text-center mb-4 flex items-center justify-center">
+          <img src="./logo.png" className="w-12 mr-2" alt="Логотип" />
+          <h1 className="text-2xl font-bold">
+            Добро пожаловать в UrbanThrough
+          </h1>
         </div>
-        
+        <p className="text-muted-foreground text-center mb-4">
+          Войдите, чтобы продолжить работу с панелью управления
+        </p>
+
         <Tabs defaultValue="login" className="w-full">
           <TabsList className="grid w-full grid-cols-2 mb-6">
             <TabsTrigger value="login">Вход</TabsTrigger>
             <TabsTrigger value="register">Регистрация</TabsTrigger>
           </TabsList>
-          
+
           <TabsContent value="login">
             <form onSubmit={handleLogin} className="space-y-4">
               <div className="space-y-2">
@@ -93,7 +98,7 @@ const AuthScreen: React.FC = () => {
                   className="input-primary"
                 />
               </div>
-              
+
               <div className="space-y-2">
                 <div className="flex items-center justify-between">
                   <Label htmlFor="password">Пароль</Label>
@@ -111,17 +116,17 @@ const AuthScreen: React.FC = () => {
                   className="input-primary"
                 />
               </div>
-              
+
               <Button
                 type="submit"
                 className="button-primary w-full"
                 disabled={isLoggingIn}
               >
-                {isLoggingIn ? 'Выполняется вход...' : 'Войти'}
+                {isLoggingIn ? "Выполняется вход..." : "Войти"}
               </Button>
             </form>
           </TabsContent>
-          
+
           <TabsContent value="register">
             <form onSubmit={handleRegister} className="space-y-4">
               <div className="space-y-2">
@@ -136,7 +141,7 @@ const AuthScreen: React.FC = () => {
                   className="input-primary"
                 />
               </div>
-              
+
               <div className="space-y-2">
                 <Label htmlFor="register-email">Email</Label>
                 <Input
@@ -149,7 +154,7 @@ const AuthScreen: React.FC = () => {
                   className="input-primary"
                 />
               </div>
-              
+
               <div className="space-y-2">
                 <Label htmlFor="register-password">Пароль</Label>
                 <Input
@@ -162,23 +167,27 @@ const AuthScreen: React.FC = () => {
                   className="input-primary"
                 />
               </div>
-              
+
               <Button
                 type="submit"
                 className="button-primary w-full"
                 disabled={isRegistering}
               >
-                {isRegistering ? 'Создание аккаунта...' : 'Создать аккаунт'}
+                {isRegistering ? "Создание аккаунта..." : "Создать аккаунт"}
               </Button>
             </form>
           </TabsContent>
         </Tabs>
-        
+
         <div className="mt-8 pt-6 border-t text-center text-sm text-muted-foreground">
           Продолжая, вы соглашаетесь с нашими
-          <a href="#" className="text-primary hover:underline mx-1">Условиями использования</a>
+          <a href="#" className="text-primary hover:underline mx-1">
+            Условиями использования
+          </a>
           и
-          <a href="#" className="text-primary hover:underline mx-1">Политикой конфиденциальности</a>
+          <a href="#" className="text-primary hover:underline mx-1">
+            Политикой конфиденциальности
+          </a>
         </div>
       </FloatingCard>
     </div>
