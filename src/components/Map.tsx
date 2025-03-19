@@ -586,39 +586,45 @@ const MapComponent: React.FC = () => {
       )}
       
       {selectedLocation && (
-        <FloatingCard className="absolute bottom-24 left-1/2 -translate-x-1/2 max-w-md animate-slide-up">
-          <div className="flex items-start justify-between">
-            <div>
-              <h3 className="font-medium text-lg">{selectedLocation.title}</h3>
-              <p className="text-sm text-muted-foreground">
-                {selectedLocation.type.charAt(0).toUpperCase() + selectedLocation.type.slice(1)}
-              </p>
+        <FloatingCard className="absolute inset-0 flex items-center justify-center">
+          <div className="p-4 rounded shadow-lg max-w-md w-full bg-transparent">
+            <div className="flex items-start justify-between">
+              <div>
+                <h3 className="font-medium text-lg">
+                  {selectedLocation.title}
+                </h3>
+                <p className="text-sm text-muted-foreground">
+                  {selectedLocation.type.charAt(0).toUpperCase() +
+                    selectedLocation.type.slice(1)}
+                </p>
+              </div>
+              <Button
+                variant="ghost"
+                size="sm"
+                className="h-8 w-8 p-0"
+                onClick={() => setSelectedLocation(null)}
+              >
+                <X className="h-4 w-4" />
+              </Button>
             </div>
-            <Button 
-              variant="ghost" 
-              size="sm" 
-              className="h-8 w-8 p-0" 
-              onClick={() => setSelectedLocation(null)}
-            >
-              <X className="h-4 w-4" />
-            </Button>
-          </div>
-          
-          <div className="mt-3 space-y-4">
-            <SensorCard 
-              title="Основные показатели" 
-              sensors={Object.values(getSensorDataByUserType())[0]}
-            />
-            
-            <Button 
-              className="w-full" 
-              onClick={() => setShowDetailedAnalysis(true)}
-            >
-              Подробная аналитика
-            </Button>
+
+            <div className="mt-3 space-y-4">
+              <SensorCard
+                title="Основные показатели"
+                sensors={Object.values(getSensorDataByUserType())[0]}
+              />
+
+              <Button
+                className="w-full"
+                onClick={() => setShowDetailedAnalysis(true)}
+              >
+                Подробная аналитика
+              </Button>
+            </div>
           </div>
         </FloatingCard>
       )}
+
       
       {/* AI Panel Dialog */}
       <Dialog open={showAIPanel} onOpenChange={setShowAIPanel}>
