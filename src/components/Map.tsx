@@ -30,7 +30,9 @@ import {
   HelpCircle,
   Shield,
   Sun,
-  Camera
+  Camera,
+  Bot,
+  Sparkles
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useAnimationOnMount } from '@/utils/animations';
@@ -43,6 +45,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } f
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Badge } from '@/components/ui/badge';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
+import { Input } from '@/components/ui/input';
 
 const minskLocations = [
   { id: 1, lat: 53.9045, lng: 27.5615, title: 'Площадь Независимости', type: 'достопримечательность' },
@@ -147,6 +150,11 @@ const MapComponent: React.FC = () => {
   const [activeLayers, setActiveLayers] = useState(
     layers.filter(layer => layer.active).map(layer => layer.id)
   );
+  const [showAIPanel, setShowAIPanel] = useState(false);
+  const [aiPrompt, setAiPrompt] = useState('');
+  const [isProcessingAI, setIsProcessingAI] = useState(false);
+  const [aiProgress, setAiProgress] = useState(0);
+  
   const { toast } = useToast();
   const { userType } = useUserType();
 
@@ -182,6 +190,44 @@ const MapComponent: React.FC = () => {
       title: 'Ориентация сброшена',
       description: 'Ориентация карты сброшена на север'
     });
+  };
+  
+  const handleAIButtonClick = () => {
+    setShowAIPanel(true);
+  };
+  
+  const handleApplyAI = () => {
+    if (!aiPrompt.trim()) {
+      toast({
+        title: "Ошибка",
+        description: "Пожалуйста, введите запрос для ИИ.",
+        variant: "destructive"
+      });
+      return;
+    }
+    
+    setIsProcessingAI(true);
+    setAiProgress(0);
+    
+    // Simulate AI processing with progress
+    const interval = setInterval(() => {
+      setAiProgress(prev => {
+        if (prev >= 100) {
+          clearInterval(interval);
+          setIsProcessingAI(false);
+          
+          toast({
+            title: "Запрос обработан",
+            description: "ИИ успешно обработал ваш запрос.",
+          });
+          
+          setShowAIPanel(false);
+          setAiPrompt('');
+          return 0;
+        }
+        return prev + 10;
+      });
+    }, 300);
   };
 
   const mapAnimation = useAnimationOnMount('animate-fade-in', 300);
@@ -454,6 +500,17 @@ const MapComponent: React.FC = () => {
         </YMaps>
       </div>
       
+      <div className={`absolute top-4 left-4 ${controlsAnimation}`}>
+        <Button 
+          onClick={handleAIButtonClick} 
+          size="icon" 
+          variant="secondary" 
+          className="h-10 w-10 rounded-full shadow-md"
+        >
+          <Bot className="h-5 w-5" />
+        </Button>
+      </div>
+      
       <div className={`absolute top-4 right-4 space-y-3 ${controlsAnimation}`}>
         <Button 
           onClick={() => setShowLayerPanel(!showLayerPanel)} 
@@ -492,8 +549,8 @@ const MapComponent: React.FC = () => {
         </Button>
       </div>
       
-      <div className={`absolute top-4 left-1/2 transform -translate-x-1/2 w-full max-w-md px-4 ${controlsAnimation}`}>
-        <div className="relative">
+      <div className={`absolute top-4 left-0 right-0 px-16 ${controlsAnimation}`}>
+        <div className="relative max-w-full mx-auto">
           <input
             type="text"
             placeholder="Поиск местоположений..."
@@ -576,6 +633,59 @@ const MapComponent: React.FC = () => {
             </Button>
           </div>
         </FloatingCard>
+      )}
+      
+      {showAIPanel && (
+        <Dialog open={showAIPanel} onOpenChange={setShowAIPanel}>
+          <DialogContent className="sm:max-w-md">
+            <DialogHeader>
+              <DialogTitle className="flex items-center gap-2">
+                <Bot className="h-5 w-5" />
+                <span>AI-ассистент</span>
+              </DialogTitle>
+              <DialogDescription>
+                Опишите что вы хотите узнать о данной локации
+              </DialogDescription>
+            </DialogHeader>
+            
+            <div className="space-y-4">
+              <div className="space-y-2">
+                <Input
+                  placeholder="Например: Анализ транспортной доступности..."
+                  value={aiPrompt}
+                  onChange={(e) => setAiPrompt(e.target.value)}
+                  disabled={isProcessingAI}
+                />
+                
+                {isProcessingAI && (
+                  <div className="space-y-2">
+                    <div className="flex items-center justify-between text-sm">
+                      <span>Обработка запроса</span>
+                      <span>{aiProgress}%</span>
+                    </div>
+                    <Progress value={aiProgress} />
+                  </div>
+                )}
+              </div>
+              
+              <div className="flex justify-end gap-2">
+                <Button variant="outline" onClick={() => setShowAIPanel(false)}>
+                  Отмена
+                </Button>
+                <Button onClick={handleApplyAI} disabled={isProcessingAI || !aiPrompt.trim()}>
+                  {isProcessingAI ? (
+                    <span className="flex items-center gap-2">
+                      <Sparkles className="h-4 w-4 animate-pulse" />
+                      Обработка...
+                    </span>
+                  ) : (
+                    "Применить"
+                  )}
+                </Button>
+              </div>
+            </div>
+          </DialogContent>
+        </Dialog>
       )}
 
       {showDetailedAnalysis && <DetailedAnalysis />}
