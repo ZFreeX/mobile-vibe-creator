@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import FloatingCard from './ui/FloatingCard';
 import { Button } from '@/components/ui/button';
@@ -19,6 +18,7 @@ import { useAnimationOnMount } from '@/utils/animations';
 import { getScoreColor } from '@/utils/colorUtils';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from '@/components/ui/dialog';
 import SensorPanel from './dashboard/SensorPanel';
+import { Progress } from '@/components/ui/progress';
 
 interface PropertyDetailProps {
   propertyId?: string;
