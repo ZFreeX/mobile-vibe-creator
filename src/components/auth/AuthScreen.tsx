@@ -38,8 +38,8 @@ const AuthScreen: React.FC = () => {
       navigate('/dashboard');
     } catch (error) {
       toast({
-        title: 'Login Failed',
-        description: 'Invalid credentials. Please try again.',
+        title: 'Ошибка входа',
+        description: 'Неверные учетные данные. Пожалуйста, попробуйте снова.',
         variant: 'destructive'
       });
     } finally {
@@ -56,8 +56,8 @@ const AuthScreen: React.FC = () => {
       navigate('/dashboard');
     } catch (error) {
       toast({
-        title: 'Registration Failed',
-        description: 'Could not complete registration. Please try again.',
+        title: 'Ошибка регистрации',
+        description: 'Не удалось завершить регистрацию. Пожалуйста, попробуйте снова.',
         variant: 'destructive'
       });
     } finally {
@@ -69,14 +69,14 @@ const AuthScreen: React.FC = () => {
     <div className="min-h-screen flex items-center justify-center p-6 bg-gradient-to-b from-background to-secondary/50">
       <FloatingCard className={`w-full max-w-md p-8 ${cardAnimation}`}>
         <div className="text-center mb-8">
-          <h1 className="text-2xl font-bold mb-2">Welcome to GeoSmart</h1>
-          <p className="text-muted-foreground">Sign in to continue to your dashboard</p>
+          <h1 className="text-2xl font-bold mb-2">Добро пожаловать в GeoSmart</h1>
+          <p className="text-muted-foreground">Войдите, чтобы продолжить работу с панелью управления</p>
         </div>
         
         <Tabs defaultValue="login" className="w-full">
           <TabsList className="grid w-full grid-cols-2 mb-6">
-            <TabsTrigger value="login">Sign In</TabsTrigger>
-            <TabsTrigger value="register">Create Account</TabsTrigger>
+            <TabsTrigger value="login">Вход</TabsTrigger>
+            <TabsTrigger value="register">Регистрация</TabsTrigger>
           </TabsList>
           
           <TabsContent value="login">
@@ -96,9 +96,9 @@ const AuthScreen: React.FC = () => {
               
               <div className="space-y-2">
                 <div className="flex items-center justify-between">
-                  <Label htmlFor="password">Password</Label>
+                  <Label htmlFor="password">Пароль</Label>
                   <a href="#" className="text-sm text-primary hover:underline">
-                    Forgot password?
+                    Забыли пароль?
                   </a>
                 </div>
                 <Input
@@ -117,7 +117,7 @@ const AuthScreen: React.FC = () => {
                 className="button-primary w-full"
                 disabled={isLoggingIn}
               >
-                {isLoggingIn ? 'Signing In...' : 'Sign In'}
+                {isLoggingIn ? 'Выполняется вход...' : 'Войти'}
               </Button>
             </form>
           </TabsContent>
@@ -125,13 +125,13 @@ const AuthScreen: React.FC = () => {
           <TabsContent value="register">
             <form onSubmit={handleRegister} className="space-y-4">
               <div className="space-y-2">
-                <Label htmlFor="register-name">Full Name</Label>
+                <Label htmlFor="register-name">Полное имя</Label>
                 <Input
                   id="register-name"
                   type="text"
                   value={registerName}
                   onChange={(e) => setRegisterName(e.target.value)}
-                  placeholder="John Doe"
+                  placeholder="Иван Иванов"
                   required
                   className="input-primary"
                 />
@@ -151,7 +151,7 @@ const AuthScreen: React.FC = () => {
               </div>
               
               <div className="space-y-2">
-                <Label htmlFor="register-password">Password</Label>
+                <Label htmlFor="register-password">Пароль</Label>
                 <Input
                   id="register-password"
                   type="password"
@@ -168,17 +168,17 @@ const AuthScreen: React.FC = () => {
                 className="button-primary w-full"
                 disabled={isRegistering}
               >
-                {isRegistering ? 'Creating Account...' : 'Create Account'}
+                {isRegistering ? 'Создание аккаунта...' : 'Создать аккаунт'}
               </Button>
             </form>
           </TabsContent>
         </Tabs>
         
         <div className="mt-8 pt-6 border-t text-center text-sm text-muted-foreground">
-          By continuing, you agree to our
-          <a href="#" className="text-primary hover:underline mx-1">Terms of Service</a>
-          and
-          <a href="#" className="text-primary hover:underline mx-1">Privacy Policy</a>
+          Продолжая, вы соглашаетесь с нашими
+          <a href="#" className="text-primary hover:underline mx-1">Условиями использования</a>
+          и
+          <a href="#" className="text-primary hover:underline mx-1">Политикой конфиденциальности</a>
         </div>
       </FloatingCard>
     </div>

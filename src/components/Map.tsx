@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { useToast } from '@/components/ui/use-toast';
 import { useUserType } from '@/context/UserTypeContext';
@@ -66,71 +67,55 @@ const timeSeriesData = [
   { time: '21:00', air: 75, noise: 50, traffic: 55, water: 93, signal: 89 }
 ];
 
+// Updated sensor data based on user requirements
 const sensorData = {
   developer: {
-    terrain: [
-      { name: 'Стабильность грунта', value: 85, icon: <Building2 />, status: 'good', source: 'Геологическая служба' },
-      { name: 'Риск затопления', value: 12, icon: <Droplets />, status: 'good', source: 'Метеослужба' },
-      { name: 'Сейсмическая активность', value: 2, icon: <Activity />, status: 'good', source: 'Сейсмологическая станция' }
+    'Основные': [
+      { name: 'Георадары', value: 85, icon: <Building2 />, status: 'good', source: 'Геологическая служба' },
+      { name: 'Датчики деформации грунта', value: 76, icon: <Activity />, status: 'good', source: 'Геологическая служба' },
+      { name: 'Датчик уровня воды', value: 92, icon: <Droplets />, status: 'good', source: 'Метеослужба' },
+      { name: 'Датчики вибрации', value: 65, icon: <Activity />, status: 'warning', source: 'Сейсмологическая станция' },
+      { name: 'Датчики осадков', value: 88, icon: <Droplets />, status: 'good', source: 'Метеослужба' }
     ],
-    infrastructure: [
-      { name: 'Транспортная доступность', value: 78, icon: <Car />, status: 'good', source: 'Транспортная служба' },
-      { name: 'Коммуникации', value: 92, icon: <Cable />, status: 'good', source: 'Городские сети' },
-      { name: 'Плотность застройки', value: 65, icon: <Building2 />, status: 'warning', source: 'Кадастровая служба' }
-    ],
-    environment: [
-      { name: 'Качество воздуха', value: 78, icon: <Wind />, status: 'good', source: 'Экологическая служба' },
-      { name: 'Уровень шума', value: 45, icon: <Activity />, status: 'good', source: 'Экологическая служба' },
-      { name: 'УФ-излучение', value: 32, icon: <Thermometer />, status: 'good', source: 'Метеослужба' }
-    ],
-    demographics: [
-      { name: 'Плотность населения', value: 72, icon: <Users />, status: 'warning', source: 'Статистическая служба' },
-      { name: 'Средний доход', value: 68, icon: <Store />, status: 'good', source: 'Экономическая служба' },
-      { name: 'Возрастной состав', value: 55, icon: <Users />, status: 'good', source: 'Статистическая служба' }
+    'Дополнительные': [
+      { name: 'Анемометры', value: 72, icon: <Wind />, status: 'good', source: 'Метеослужба' },
+      { name: 'Термометры', value: 91, icon: <Thermometer />, status: 'good', source: 'Метеослужба' },
+      { name: 'Пиранометры', value: 83, icon: <Sun />, status: 'good', source: 'Метеослужба' },
+      { name: 'Датчики влажности', value: 78, icon: <Droplets />, status: 'good', source: 'Метеослужба' },
+      { name: 'Датчики качества воздуха', value: 67, icon: <Wind />, status: 'warning', source: 'Экологическая служба' },
+      { name: 'Шумовые датчики', value: 54, icon: <Activity />, status: 'warning', source: 'Экологическая служба' }
     ]
   },
   business: {
-    traffic: [
-      { name: 'Пешеходный трафик', value: 85, icon: <Users />, status: 'good', source: 'Городской мониторинг' },
-      { name: 'Автомобильный трафик', value: 75, icon: <Car />, status: 'good', source: 'Транспортная служба' },
-      { name: 'Общественный транспорт', value: 92, icon: <Car />, status: 'good', source: 'Транспортная служба' }
+    'Основные': [
+      { name: 'Датчик трафика и Wi-Fi трекеры', value: 85, icon: <Wifi />, status: 'good', source: 'Городской мониторинг' },
+      { name: 'Датчик качества воздуха', value: 75, icon: <Wind />, status: 'good', source: 'Экологическая служба' },
+      { name: 'Датчики парковок', value: 45, icon: <Car />, status: 'warning', source: 'Городская служба' },
+      { name: 'Датчики освещенности', value: 92, icon: <Sun />, status: 'good', source: 'Городская служба' },
+      { name: 'Шумовые датчики', value: 68, icon: <Activity />, status: 'warning', source: 'Экологическая служба' }
     ],
-    infrastructure: [
-      { name: 'Качество интернета', value: 95, icon: <Wifi />, status: 'good', source: 'Провайдеры связи' },
-      { name: 'Мобильная связь', value: 88, icon: <Signal />, status: 'good', source: 'Операторы связи' },
-      { name: 'Парковочные места', value: 45, icon: <Car />, status: 'warning', source: 'Городская служба' }
-    ],
-    competition: [
-      { name: 'Конкуренция', value: 65, icon: <Store />, status: 'warning', source: 'Бизнес-реестр' },
-      { name: 'Заполняемость', value: 82, icon: <Users />, status: 'good', source: 'Статистическая служба' },
-      { name: 'Развитие района', value: 78, icon: <Building2 />, status: 'good', source: 'Городская служба' }
-    ],
-    utilities: [
-      { name: 'Электроснабжение', value: 95, icon: <Cable />, status: 'good', source: 'Энергослужба' },
-      { name: 'Водоснабжение', value: 92, icon: <Droplets />, status: 'good', source: 'Водоканал' },
-      { name: 'Канализация', value: 88, icon: <Droplets />, status: 'good', source: 'Водоканал' }
+    'Дополнительные': [
+      { name: 'Термометры', value: 95, icon: <Thermometer />, status: 'good', source: 'Метеослужба' },
+      { name: 'Датчики УФ-излучения', value: 78, icon: <Sun />, status: 'good', source: 'Метеослужба' },
+      { name: 'Датчики влажности', value: 88, icon: <Droplets />, status: 'good', source: 'Метеослужба' }
     ]
   },
   residential: {
-    environment: [
-      { name: 'Качество воздуха', value: 82, icon: <Wind />, status: 'good', source: 'Экологическая служба' },
-      { name: 'Уровень шума', value: 68, icon: <Activity />, status: 'warning', source: 'Экологическая служба' },
-      { name: 'Зеленые зоны', value: 75, icon: <Wind />, status: 'good', source: 'Городская служба' }
+    'Основные': [
+      { name: 'Датчик качества воздуха', value: 82, icon: <Wind />, status: 'good', source: 'Экологическая служба' },
+      { name: 'Датчики парковок', value: 68, icon: <Car />, status: 'warning', source: 'Городская служба' },
+      { name: 'Датчики освещенности', value: 92, icon: <Sun />, status: 'good', source: 'Городская служба' },
+      { name: 'Шумовые датчики', value: 68, icon: <Activity />, status: 'warning', source: 'Экологическая служба' }
     ],
-    infrastructure: [
-      { name: 'Школы поблизости', value: 85, icon: <Building2 />, status: 'good', source: 'Образовательная служба' },
-      { name: 'Медицинские учреждения', value: 92, icon: <Building2 />, status: 'good', source: 'Медицинская служба' },
-      { name: 'Магазины', value: 88, icon: <Store />, status: 'good', source: 'Городская служба' }
-    ],
-    utilities: [
-      { name: 'Качество воды', value: 95, icon: <Droplets />, status: 'good', source: 'Водоканал' },
-      { name: 'Интернет', value: 92, icon: <Wifi />, status: 'good', source: 'Провайдеры связи' },
-      { name: 'Мобильная связь', value: 88, icon: <Signal />, status: 'good', source: 'Операторы связи' }
-    ],
-    safety: [
-      { name: 'Безопасность района', value: 88, icon: <Shield />, status: 'good', source: 'Полиция' },
-      { name: 'Освещение', value: 92, icon: <Sun />, status: 'good', source: 'Городская служба' },
-      { name: 'Камеры наблюдения', value: 85, icon: <Camera />, status: 'good', source: 'Городская служба' }
+    'Дополнительные': [
+      { name: 'Термометры', value: 95, icon: <Thermometer />, status: 'good', source: 'Метеослужба' },
+      { name: 'Датчики качества воздуха', value: 78, icon: <Wind />, status: 'good', source: 'Экологическая служба' },
+      { name: 'Шумовые датчики', value: 65, icon: <Activity />, status: 'warning', source: 'Экологическая служба' },
+      { name: 'Датчики УФ-излучения', value: 81, icon: <Sun />, status: 'good', source: 'Метеослужба' },
+      { name: 'Датчики видимости', value: 86, icon: <Camera />, status: 'good', source: 'Городская служба' },
+      { name: 'Датчики влажности почвы', value: 72, icon: <Droplets />, status: 'good', source: 'Метеослужба' },
+      { name: 'Датчики уровня воды', value: 94, icon: <Droplets />, status: 'good', source: 'Метеослужба' },
+      { name: 'Датчики безопасности', value: 88, icon: <Shield />, status: 'good', source: 'Городская служба' }
     ]
   }
 };
@@ -408,7 +393,7 @@ const MapComponent: React.FC = () => {
                 {Object.entries(data).map(([category, sensors]) => (
                   <SensorCard
                     key={category}
-                    title={category.charAt(0).toUpperCase() + category.slice(1)}
+                    title={category}
                     sensors={sensors}
                   />
                 ))}
@@ -503,11 +488,11 @@ const MapComponent: React.FC = () => {
       <div className={`absolute top-4 left-4 ${controlsAnimation}`}>
         <Button 
           onClick={handleAIButtonClick} 
-          size="icon" 
           variant="secondary" 
-          className="h-10 w-10 rounded-full shadow-md"
+          className="h-10 px-4 rounded-full shadow-md flex items-center gap-2"
         >
           <Bot className="h-5 w-5" />
+          <span>AI</span>
         </Button>
       </div>
       
@@ -549,7 +534,7 @@ const MapComponent: React.FC = () => {
         </Button>
       </div>
       
-      <div className={`absolute top-4 left-0 right-0 px-16 ${controlsAnimation}`}>
+      <div className={`absolute top-4 left-0 right-0 mx-auto w-full px-16 ${controlsAnimation}`}>
         <div className="relative max-w-full mx-auto">
           <input
             type="text"
@@ -635,58 +620,57 @@ const MapComponent: React.FC = () => {
         </FloatingCard>
       )}
       
-      {showAIPanel && (
-        <Dialog open={showAIPanel} onOpenChange={setShowAIPanel}>
-          <DialogContent className="sm:max-w-md">
-            <DialogHeader>
-              <DialogTitle className="flex items-center gap-2">
-                <Bot className="h-5 w-5" />
-                <span>AI-ассистент</span>
-              </DialogTitle>
-              <DialogDescription>
-                Опишите что вы хотите узнать о данной локации
-              </DialogDescription>
-            </DialogHeader>
-            
-            <div className="space-y-4">
-              <div className="space-y-2">
-                <Input
-                  placeholder="Например: Анализ транспортной доступности..."
-                  value={aiPrompt}
-                  onChange={(e) => setAiPrompt(e.target.value)}
-                  disabled={isProcessingAI}
-                />
-                
-                {isProcessingAI && (
-                  <div className="space-y-2">
-                    <div className="flex items-center justify-between text-sm">
-                      <span>Обработка запроса</span>
-                      <span>{aiProgress}%</span>
-                    </div>
-                    <Progress value={aiProgress} />
-                  </div>
-                )}
-              </div>
+      {/* AI Panel Dialog */}
+      <Dialog open={showAIPanel} onOpenChange={setShowAIPanel}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <Bot className="h-5 w-5" />
+              <span>AI-ассистент</span>
+            </DialogTitle>
+            <DialogDescription>
+              Опишите что вы хотите узнать о данной локации
+            </DialogDescription>
+          </DialogHeader>
+          
+          <div className="space-y-4">
+            <div className="space-y-2">
+              <Input
+                placeholder="Например: Анализ транспортной доступности..."
+                value={aiPrompt}
+                onChange={(e) => setAiPrompt(e.target.value)}
+                disabled={isProcessingAI}
+              />
               
-              <div className="flex justify-end gap-2">
-                <Button variant="outline" onClick={() => setShowAIPanel(false)}>
-                  Отмена
-                </Button>
-                <Button onClick={handleApplyAI} disabled={isProcessingAI || !aiPrompt.trim()}>
-                  {isProcessingAI ? (
-                    <span className="flex items-center gap-2">
-                      <Sparkles className="h-4 w-4 animate-pulse" />
-                      Обработка...
-                    </span>
-                  ) : (
-                    "Применить"
-                  )}
-                </Button>
-              </div>
+              {isProcessingAI && (
+                <div className="space-y-2">
+                  <div className="flex items-center justify-between text-sm">
+                    <span>Обработка запроса</span>
+                    <span>{aiProgress}%</span>
+                  </div>
+                  <Progress value={aiProgress} />
+                </div>
+              )}
             </div>
-          </DialogContent>
-        </Dialog>
-      )}
+            
+            <div className="flex justify-end gap-2">
+              <Button variant="outline" onClick={() => setShowAIPanel(false)}>
+                Отмена
+              </Button>
+              <Button onClick={handleApplyAI} disabled={isProcessingAI || !aiPrompt.trim()}>
+                {isProcessingAI ? (
+                  <span className="flex items-center gap-2">
+                    <Sparkles className="h-4 w-4 animate-pulse" />
+                    Обработка...
+                  </span>
+                ) : (
+                  "Применить"
+                )}
+              </Button>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
 
       {showDetailedAnalysis && <DetailedAnalysis />}
     </div>

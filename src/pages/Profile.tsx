@@ -45,71 +45,55 @@ const Profile: React.FC = () => {
     'residential': 'Данные о качестве жизни, экологии и инфраструктуре района.'
   };
 
+  // Updated sensor criteria based on user requirements
   const analysisCriteria = {
     developer: {
-      terrain: [
-        { id: 'terrain-stability', label: 'Стабильность грунта', checked: true },
-        { id: 'flood-risk', label: 'Риск затопления', checked: true },
-        { id: 'seismic-activity', label: 'Сейсмическая активность', checked: true }
+      'Основные': [
+        { id: 'geo-radars', label: 'Георадары', checked: true },
+        { id: 'soil-deformation', label: 'Датчики деформации грунта', checked: true },
+        { id: 'water-level', label: 'Датчик уровня воды', checked: true },
+        { id: 'vibration', label: 'Датчики вибрации', checked: true },
+        { id: 'precipitation', label: 'Датчики осадков', checked: true }
       ],
-      infrastructure: [
-        { id: 'transport-accessibility', label: 'Транспортная доступность', checked: true },
-        { id: 'communications', label: 'Коммуникации', checked: true },
-        { id: 'building-density', label: 'Плотность застройки', checked: true }
-      ],
-      environment: [
-        { id: 'air-quality', label: 'Качество воздуха', checked: true },
-        { id: 'noise-level', label: 'Уровень шума', checked: true },
-        { id: 'uv-radiation', label: 'УФ-излучение', checked: true }
-      ],
-      demographics: [
-        { id: 'population-density', label: 'Плотность населения', checked: true },
-        { id: 'average-income', label: 'Средний доход', checked: true },
-        { id: 'age-composition', label: 'Возрастной состав', checked: true }
+      'Дополнительные': [
+        { id: 'anemometers', label: 'Анемометры', checked: true },
+        { id: 'thermometers', label: 'Термометры', checked: true },
+        { id: 'pyranometers', label: 'Пиранометры', checked: true },
+        { id: 'humidity', label: 'Датчики влажности', checked: true },
+        { id: 'air-quality', label: 'Датчики качества воздуха', checked: true },
+        { id: 'noise', label: 'Шумовые датчики', checked: true }
       ]
     },
     business: {
-      traffic: [
-        { id: 'pedestrian-traffic', label: 'Пешеходный трафик', checked: true },
-        { id: 'car-traffic', label: 'Автомобильный трафик', checked: true },
-        { id: 'public-transport', label: 'Общественный транспорт', checked: true }
+      'Основные': [
+        { id: 'traffic-wifi', label: 'Датчик трафика и Wi-Fi трекеры', checked: true },
+        { id: 'air-quality', label: 'Датчик качества воздуха', checked: true },
+        { id: 'parking', label: 'Датчики парковок', checked: true },
+        { id: 'lighting', label: 'Датчики освещенности', checked: true },
+        { id: 'noise', label: 'Шумовые датчики', checked: true }
       ],
-      infrastructure: [
-        { id: 'internet-quality', label: 'Качество интернета', checked: true },
-        { id: 'mobile-coverage', label: 'Мобильная связь', checked: true },
-        { id: 'parking-spaces', label: 'Парковочные места', checked: true }
-      ],
-      competition: [
-        { id: 'competition', label: 'Конкуренция', checked: true },
-        { id: 'occupancy', label: 'Заполняемость', checked: true },
-        { id: 'district-development', label: 'Развитие района', checked: true }
-      ],
-      utilities: [
-        { id: 'electricity', label: 'Электроснабжение', checked: true },
-        { id: 'water-supply', label: 'Водоснабжение', checked: true },
-        { id: 'sewerage', label: 'Канализация', checked: true }
+      'Дополнительные': [
+        { id: 'thermometers', label: 'Термометры', checked: true },
+        { id: 'uv-radiation', label: 'Датчики УФ-излучения', checked: true },
+        { id: 'humidity', label: 'Датчики влажности', checked: true }
       ]
     },
     residential: {
-      environment: [
-        { id: 'air-quality', label: 'Качество воздуха', checked: true },
-        { id: 'noise-level', label: 'Уровень шума', checked: true },
-        { id: 'green-zones', label: 'Зеленые зоны', checked: true }
+      'Основные': [
+        { id: 'air-quality', label: 'Датчик качества воздуха', checked: true },
+        { id: 'parking', label: 'Датчики парковок', checked: true },
+        { id: 'lighting', label: 'Датчики освещенности', checked: true },
+        { id: 'noise', label: 'Шумовые датчики', checked: true }
       ],
-      infrastructure: [
-        { id: 'schools-nearby', label: 'Школы поблизости', checked: true },
-        { id: 'medical-facilities', label: 'Медицинские учреждения', checked: true },
-        { id: 'shops', label: 'Магазины', checked: true }
-      ],
-      utilities: [
-        { id: 'water-quality', label: 'Качество воды', checked: true },
-        { id: 'internet', label: 'Интернет', checked: true },
-        { id: 'mobile-coverage', label: 'Мобильная связь', checked: true }
-      ],
-      safety: [
-        { id: 'district-safety', label: 'Безопасность района', checked: true },
-        { id: 'lighting', label: 'Освещение', checked: true },
-        { id: 'surveillance-cameras', label: 'Камеры наблюдения', checked: true }
+      'Дополнительные': [
+        { id: 'thermometers', label: 'Термометры', checked: true },
+        { id: 'air-quality-additional', label: 'Датчики качества воздуха', checked: true },
+        { id: 'noise-additional', label: 'Шумовые датчики', checked: true },
+        { id: 'uv-radiation', label: 'Датчики УФ-излучения', checked: true },
+        { id: 'visibility', label: 'Датчики видимости', checked: true },
+        { id: 'soil-humidity', label: 'Датчики влажности почвы', checked: true },
+        { id: 'water-level', label: 'Датчики уровня воды', checked: true },
+        { id: 'security', label: 'Датчики безопасности', checked: true }
       ]
     }
   };
@@ -275,16 +259,7 @@ const Profile: React.FC = () => {
           <div className="space-y-6 my-4">
             {Object.entries(criteria[userType]).map(([category, items]) => (
               <div key={category} className="space-y-3">
-                <h3 className="font-semibold capitalize">{
-                  category === 'terrain' ? 'Рельеф' : 
-                  category === 'demographics' ? 'Демография' :
-                  category === 'traffic' ? 'Трафик' :
-                  category === 'competition' ? 'Конкуренция' :
-                  category === 'utilities' ? 'Коммуникации' :
-                  category === 'safety' ? 'Безопасность' :
-                  category === 'environment' ? 'Экология' :
-                  category === 'infrastructure' ? 'Инфраструктура' : category
-                }</h3>
+                <h3 className="font-semibold capitalize">{category}</h3>
                 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                   {items.map((item) => (
