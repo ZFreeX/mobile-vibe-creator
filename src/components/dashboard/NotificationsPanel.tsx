@@ -15,7 +15,7 @@ interface Notification {
 }
 
 // Sample notifications for each user type
-const notificationsByUserType = {
+const notificationsByUserType: Record<string, Notification[]> = {
   developer: [
     {
       id: 1,

@@ -7,7 +7,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
 import { Badge } from '@/components/ui/badge';
-import { Bell, Building2, HomeIcon, MapPin, Store } from 'lucide-react';
+import { Bell, Building2, HomeIcon, MapPin, Store, Thermometer, Wind, DropletIcon, Activity, CloudRain, Sun, CloudIcon, Waves, AlertTriangle, Wifi, Car, SunIcon, Eye, Gauge, Lock } from 'lucide-react';
 import FloatingCard from './ui/FloatingCard';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import { useAnimationOnMount } from '@/utils/animations';
@@ -160,53 +160,53 @@ const SensorPanel = ({ userType }) => {
 const getSensorsByUserType = (userType) => {
   const developerSensors = {
     'Основные': [
-      { name: 'Георадары', value: 82, status: 'good' },
-      { name: 'Датчики деформации грунта', value: 76, status: 'good' },
-      { name: 'Датчик уровня воды', value: 92, status: 'good' },
-      { name: 'Датчики вибрации', value: 65, status: 'warning' },
-      { name: 'Датчики осадков', value: 88, status: 'good' }
+      { name: 'Георадары', value: 82, status: 'good', icon: <Activity className="h-4 w-4" /> },
+      { name: 'Датчики деформации грунта', value: 76, status: 'good', icon: <Waves className="h-4 w-4" /> },
+      { name: 'Датчик уровня воды', value: 92, status: 'good', icon: <DropletIcon className="h-4 w-4" /> },
+      { name: 'Датчики вибрации', value: 65, status: 'warning', icon: <Activity className="h-4 w-4" /> },
+      { name: 'Датчики осадков', value: 88, status: 'good', icon: <CloudRain className="h-4 w-4" /> }
     ],
     'Дополнительные': [
-      { name: 'Анемометры', value: 72, status: 'good' },
-      { name: 'Термометры', value: 91, status: 'good' },
-      { name: 'Пиранометры', value: 83, status: 'good' },
-      { name: 'Датчики влажности', value: 78, status: 'good' },
-      { name: 'Датчики качества воздуха', value: 67, status: 'warning' },
-      { name: 'Шумовые датчики', value: 54, status: 'warning' }
+      { name: 'Анемометры', value: 72, status: 'good', icon: <Wind className="h-4 w-4" /> },
+      { name: 'Термометры', value: 91, status: 'good', icon: <Thermometer className="h-4 w-4" /> },
+      { name: 'Пиранометры', value: 83, status: 'good', icon: <Sun className="h-4 w-4" /> },
+      { name: 'Датчики влажности', value: 78, status: 'good', icon: <DropletIcon className="h-4 w-4" /> },
+      { name: 'Датчики качества воздуха', value: 67, status: 'warning', icon: <CloudIcon className="h-4 w-4" /> },
+      { name: 'Шумовые датчики', value: 54, status: 'warning', icon: <AlertTriangle className="h-4 w-4" /> }
     ]
   };
   
   const businessSensors = {
     'Основные': [
-      { name: 'Датчик трафика и Wi-Fi трекеры', value: 88, status: 'good' },
-      { name: 'Датчик качества воздуха', value: 72, status: 'good' },
-      { name: 'Датчики парковок', value: 64, status: 'warning' },
-      { name: 'Датчики освещенности', value: 91, status: 'good' },
-      { name: 'Шумовые датчики', value: 67, status: 'warning' }
+      { name: 'Датчик трафика и Wi-Fi трекеры', value: 88, status: 'good', icon: <Wifi className="h-4 w-4" /> },
+      { name: 'Датчик качества воздуха', value: 72, status: 'good', icon: <CloudIcon className="h-4 w-4" /> },
+      { name: 'Датчики парковок', value: 64, status: 'warning', icon: <Car className="h-4 w-4" /> },
+      { name: 'Датчики освещенности', value: 91, status: 'good', icon: <SunIcon className="h-4 w-4" /> },
+      { name: 'Шумовые датчики', value: 67, status: 'warning', icon: <AlertTriangle className="h-4 w-4" /> }
     ],
     'Дополнительные': [
-      { name: 'Термометры', value: 92, status: 'good' },
-      { name: 'Датчики УФ-излучения', value: 78, status: 'good' },
-      { name: 'Датчики влажности', value: 85, status: 'good' }
+      { name: 'Термометры', value: 92, status: 'good', icon: <Thermometer className="h-4 w-4" /> },
+      { name: 'Датчики УФ-излучения', value: 78, status: 'good', icon: <Sun className="h-4 w-4" /> },
+      { name: 'Датчики влажности', value: 85, status: 'good', icon: <DropletIcon className="h-4 w-4" /> }
     ]
   };
   
   const residentialSensors = {
     'Основные': [
-      { name: 'Датчик качества воздуха', value: 75, status: 'good' },
-      { name: 'Датчики парковок', value: 62, status: 'warning' },
-      { name: 'Датчики освещенности', value: 89, status: 'good' },
-      { name: 'Шумовые датчики', value: 70, status: 'good' }
+      { name: 'Датчик качества воздуха', value: 75, status: 'good', icon: <CloudIcon className="h-4 w-4" /> },
+      { name: 'Датчики парковок', value: 62, status: 'warning', icon: <Car className="h-4 w-4" /> },
+      { name: 'Датчики освещенности', value: 89, status: 'good', icon: <SunIcon className="h-4 w-4" /> },
+      { name: 'Шумовые датчики', value: 70, status: 'good', icon: <AlertTriangle className="h-4 w-4" /> }
     ],
     'Дополнительные': [
-      { name: 'Термометры', value: 92, status: 'good' },
-      { name: 'Датчики качества воздуха', value: 78, status: 'good' },
-      { name: 'Шумовые датчики', value: 65, status: 'warning' },
-      { name: 'Датчики УФ-излучения', value: 81, status: 'good' },
-      { name: 'Датчики видимости', value: 86, status: 'good' },
-      { name: 'Датчики влажности почвы', value: 72, status: 'good' },
-      { name: 'Датчики уровня воды', value: 94, status: 'good' },
-      { name: 'Датчики безопасности', value: 88, status: 'good' }
+      { name: 'Термометры', value: 92, status: 'good', icon: <Thermometer className="h-4 w-4" /> },
+      { name: 'Датчики качества воздуха', value: 78, status: 'good', icon: <CloudIcon className="h-4 w-4" /> },
+      { name: 'Шумовые датчики', value: 65, status: 'warning', icon: <AlertTriangle className="h-4 w-4" /> },
+      { name: 'Датчики УФ-излучения', value: 81, status: 'good', icon: <Sun className="h-4 w-4" /> },
+      { name: 'Датчики видимости', value: 86, status: 'good', icon: <Eye className="h-4 w-4" /> },
+      { name: 'Датчики влажности почвы', value: 72, status: 'good', icon: <DropletIcon className="h-4 w-4" /> },
+      { name: 'Датчики уровня воды', value: 94, status: 'good', icon: <Gauge className="h-4 w-4" /> },
+      { name: 'Датчики безопасности', value: 88, status: 'good', icon: <Lock className="h-4 w-4" /> }
     ]
   };
   
